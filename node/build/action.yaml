@@ -1,0 +1,58 @@
+name: NPM Build & Store
+on:
+  workflow_call:
+    inputs:
+      build_artifact_name:
+        required: true
+        type: string
+      build_artifact_path:
+        required: true
+        type: string
+      bootstrap:
+        default: false
+        type: boolean
+      clone_recursive:
+        default: false
+        type: boolean
+      build_options:
+        type: string
+    secrets:
+      GH_ACTIONS_READ_REPO:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo with Submodules
+        uses: actions/checkout@v3
+        if: ${{ inputs.clone_recursive }}
+        with:
+          submodules: "recursive"
+          token: ${{ secrets.GH_ACTIONS_READ_REPO }}
+
+      - name: Clone Repo
+        uses: actions/checkout@v3
+        if: ${{ !inputs.clone_recursive }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.10.0
+          cache: npm
+
+      - name: Install Node Modules
+        run: npm ci
+
+      - name: Bootstrap Modules
+        if: ${{ inputs.bootstrap }}
+        run: npm run bootstrap
+
+      - name: Build App
+        run: npm run build ${{ inputs.build_options }}
+
+      - name: Zip Build Artifacts
+        run: cd ${{ inputs.build_artifact_path }} && zip -r ~/${{ inputs.build_artifact_name }}.zip *
+
+      - name: Archive Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.build_artifact_name }}
+          path: ~/${{ inputs.build_artifact_name }}.zip
