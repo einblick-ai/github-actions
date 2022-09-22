@@ -1,0 +1,41 @@
+name: Delete Akamai Deploy 
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      directory:
+        required: true
+        type: string
+      filename:
+        required: true
+        type: string
+      cp_code:
+        required: true
+        type: string
+      upload_account:
+        required: true
+        type: string
+      host:
+        required: true
+        type: string
+    secrets:
+      AKAMAI_NETSTORAGE_CONTENT_API_KEY:
+        required: true
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    env:
+      AKAMAI_NETSTORAGE_CONTENT_API_KEY: ${{ secrets.AKAMAI_NETSTORAGE_CONTENT_API_KEY }}
+    steps:
+      - name: Checkout workflows repo # required so we can reference the actions locally
+        uses: actions/checkout@v3
+        with:
+          ref: '1.1.3'
+          path: ./github-workflows/
+          repository: einblick-ai/github-workflows
+      - name: Remove pull request zip file
+        run: |
+          node ./github-workflows/akamai_netstorage/delete/delete_script.js ${{ inputs.host }} ${{ inputs.cp_code }} ${{ inputs.directory }} ${{ inputs.filename }} $AKAMAI_NETSTORAGE_CONTENT_API_KEY ${{ inputs.upload_account }}

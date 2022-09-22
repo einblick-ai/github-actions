@@ -1,0 +1,8 @@
+name: Purge everything with cache tag from Akamai Network
+inputs:
+  cache_tag:
+    required: true
+    type: string
+runs:
+  using: 'node16'
+  main: 'purge-script.js'
