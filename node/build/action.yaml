@@ -36,16 +36,20 @@ runs:
 
     - name: Install Node Modules
       run: npm ci
+      shell: bash
 
     - name: Bootstrap Modules
       if: ${{ inputs.bootstrap }}
       run: npm run bootstrap
+      shell: bash
 
     - name: Build App
       run: npm run build ${{ inputs.build_options }}
+      shell: bash
 
     - name: Zip Build Artifacts
       run: cd ${{ inputs.build_artifact_path }} && zip -r ~/${{ inputs.build_artifact_name }}.zip *
+      shell: bash
 
     - name: Archive Build Artifacts
       uses: actions/upload-artifact@v3
