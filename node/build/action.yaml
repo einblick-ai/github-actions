@@ -27,7 +27,7 @@ runs:
       shell: bash
 
     - name: npm run
-      run: ✗ ./npm_run_multiple.sh ${{ inputs.npm_run_list }}
+      run: ./npm_run_multiple.sh ${{ inputs.npm_run_list }}
       shell: bash
 
     - name: Zip Build Artifacts
