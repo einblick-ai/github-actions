@@ -39,7 +39,7 @@ runs:
       run: npm ci
 
     - name: Bootstrap Modules
-      if: inputs.bootstrap
+      if: inputs.bootstrap == 'true'
       shell: bash
       run: npm run bootstrap
 
