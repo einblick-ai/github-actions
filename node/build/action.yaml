@@ -17,15 +17,14 @@ runs:
     - name: Clone Repo
       uses: actions/checkout@v3
 
-    - name: setup
-      if: inputs.clone_recursive == 'true'
+    - name: Setup Node
       uses: actions/setup-node@v3
       with:
         node-version: 16.10.0
         cache: npm
 
-    - name: build
-      run: npm_run_multiple2.sh ${{ inputs.npm_run_list }}
+    - name: Build
+      run: bash ${{github.action_path}}/npm_run_multiple2.sh ${{ inputs.npm_run_list }}
       shell: bash
 
     - name: Install Node Modules
@@ -63,4 +62,5 @@ runs:
       shell: bash
 
 #https://colinsalmcorner.com/github-composite-actions/
+#https://timheuer.com/blog/use-github-composite-actions-for-templates-in-workflows/
 
