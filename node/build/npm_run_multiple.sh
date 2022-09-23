@@ -1,3 +1,5 @@
+#! /bin/bash
+
 rest=$1
 while [ -n "$rest" ] ; do
    str=${rest%%,*}  # Everything up to the first ';'
