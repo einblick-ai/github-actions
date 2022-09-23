@@ -18,8 +18,8 @@ runs:
   using: "composite"
   steps:
     - name: Clone Repo with Submodules
-      uses: actions/checkout@v3
       if: ${{ inputs.clone_recursive }}
+      uses: actions/checkout@v3
       with:
         submodules: "recursive"
         token: ${{ env.GH_ACTIONS_READ_REPO }}
