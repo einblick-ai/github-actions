@@ -18,7 +18,7 @@ runs:
   using: "composite"
   steps:
     - name: Clone Repo with Submodules
-      if: inputs.clone_recursive
+      if: inputs.clone_recursive == true
       uses: actions/checkout@v3
       with:
         submodules: "recursive"
