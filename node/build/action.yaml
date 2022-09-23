@@ -35,17 +35,20 @@ runs:
         cache: npm
 
     - name: Install Node Modules
-      run: npm ci
       shell: bash
+      run: npm ci
 
     - name: Bootstrap Modules
       if: inputs.bootstrap
+      shell: bash
       run: npm run bootstrap
 
     - name: Build App
+      shell: bash
       run: npm run build ${{ inputs.build_options }}
 
     - name: Zip Build Artifacts
+      shell: bash
       run: cd ${{ inputs.build_artifact_path }} && zip -r ~/${{ inputs.build_artifact_name }}.zip *
 
     - name: Archive Build Artifacts
