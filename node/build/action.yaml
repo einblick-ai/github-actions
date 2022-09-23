@@ -1,20 +1,19 @@
 name: NPM Build & Store
 inputs:
-    inputs:
-      build_artifact_name:
-        required: true
-        type: string
-      build_artifact_path:
-        required: true
-        type: string
-      bootstrap:
-        default: false
-        type: boolean
-      clone_recursive:
-        default: false
-        type: boolean
-      build_options:
-        type: string
+    build_artifact_name:
+      required: true
+      type: string
+    build_artifact_path:
+      required: true
+      type: string
+    bootstrap:
+      default: false
+      type: boolean
+    clone_recursive:
+      default: false
+      type: boolean
+    build_options:
+      type: string
 runs:
   using: "composite"
   steps:
