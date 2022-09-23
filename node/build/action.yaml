@@ -6,15 +6,26 @@ inputs:
     build_artifact_path:
       required: true
       type: string
+    bootstrap:
+      default: false
+      type: boolean
     clone_recursive:
       default: false
       type: boolean
-    npm_run_list:
+    build_options:
       type: string
 runs:
   using: "composite"
   steps:
+    - name: Clone Repo with Submodules
+      if: inputs.clone_recursive
+      uses: actions/checkout@v3
+      with:
+        submodules: "recursive"
+        token: ${{ secrets.GH_ACTIONS_READ_REPO }}
+
     - name: Clone Repo
+      if: !inputs.clone_recursive
       uses: actions/checkout@v3
 
     - name: Setup Node
@@ -23,33 +34,19 @@ runs:
         node-version: 16.10.0
         cache: npm
 
-    - name: Purge
-      run: node ${{github.action_path}}/purge-script.js
-      shell: bash
-      
-    - name: Build
-      run: bash ${{github.action_path}}/npm_run_multiple2.sh ${{ inputs.npm_run_list }}
-      shell: bash
-
     - name: Install Node Modules
       run: npm ci
       shell: bash
 
-    - name: npm run
-      shell: bash
-      run: |
-        rest=${{ inputs.npm_run_list }}
-        while [ -n "$rest" ] ; do
-          str=${rest%%,*}  # Everything up to the first ';'
-  
-          [ "$rest" = "${rest/,/}" ] && rest= || rest=${rest#*,}
-          echo "+ \"$str\"" 
-          npm run $str
-        done
-      
+    - name: Bootstrap Modules
+      if: inputs.bootstrap
+      run: npm run bootstrap
+
+    - name: Build App
+      run: npm run build ${{ inputs.build_options }}
+
     - name: Zip Build Artifacts
       run: cd ${{ inputs.build_artifact_path }} && zip -r ~/${{ inputs.build_artifact_name }}.zip *
-      shell: bash
 
     - name: Archive Build Artifacts
       uses: actions/upload-artifact@v3
@@ -57,14 +54,4 @@ runs:
         name: ${{ inputs.build_artifact_name }}
         path: ~/${{ inputs.build_artifact_name }}.zip
 
-    - name: build
-      run: npm_run_multiple.sh ${{ inputs.npm_run_list }}
-      shell: bash
-      
-    - name: Purge
-      run: node ${{github.action_path}}/purge-script.js
-      shell: bash
-
-#https://colinsalmcorner.com/github-composite-actions/
-#https://timheuer.com/blog/use-github-composite-actions-for-templates-in-workflows/
 
