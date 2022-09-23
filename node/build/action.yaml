@@ -17,7 +17,9 @@ runs:
     - name: Clone Repo
       uses: actions/checkout@v3
 
-    - uses: actions/setup-node@v3
+    - name: setup
+      if: inputs.clone_recursive == 'true'
+      uses: actions/setup-node@v3
       with:
         node-version: 16.10.0
         cache: npm
@@ -59,4 +61,6 @@ runs:
     - name: Purge
       run: node purge-script.js
       shell: bash
+
+#https://colinsalmcorner.com/github-composite-actions/
 
