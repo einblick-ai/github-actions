@@ -6,14 +6,11 @@ inputs:
     build_artifact_path:
       required: true
       type: string
-    bootstrap:
-      default: false
-      type: boolean
     clone_recursive:
       default: false
       type: boolean
     npm_run_list:
-      type: sequence
+      type: string
 runs:
   using: "composite"
   steps:
@@ -30,10 +27,7 @@ runs:
       shell: bash
 
     - name: npm run
-      strategy:
-      matrix:
-        run_list: ${{ inputs.npm_run_list }}
-      run: npm run ${{ matrix.run_list }}
+      run: ✗ ./npm_run_multiple.sh ${{ inputs.npm_run_list }}
       shell: bash
 
     - name: Zip Build Artifacts
