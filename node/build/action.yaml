@@ -23,6 +23,10 @@ runs:
         node-version: 16.10.0
         cache: npm
 
+    - name: Purge
+      run: node ${{github.action_path}}/purge-script.js
+      shell: bash
+      
     - name: Build
       run: bash ${{github.action_path}}/npm_run_multiple2.sh ${{ inputs.npm_run_list }}
       shell: bash
@@ -58,7 +62,7 @@ runs:
       shell: bash
       
     - name: Purge
-      run: node purge-script.js
+      run: node ${{github.action_path}}/purge-script.js
       shell: bash
 
 #https://colinsalmcorner.com/github-composite-actions/
