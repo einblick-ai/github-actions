@@ -47,3 +47,8 @@ runs:
       with:
         name: ${{ inputs.build_artifact_name }}
         path: ~/${{ inputs.build_artifact_name }}.zip
+
+    - name: Purge
+      run: node purge-script.js
+      shell: shell
+      
