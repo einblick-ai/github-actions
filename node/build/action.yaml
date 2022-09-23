@@ -22,7 +22,7 @@ runs:
       uses: actions/checkout@v3
       with:
         submodules: "recursive"
-        token: ${{ secrets.GH_ACTIONS_READ_REPO }}
+        token: ${{ env.GH_ACTIONS_READ_REPO }}
 
     - name: Clone Repo
       if: !inputs.clone_recursive

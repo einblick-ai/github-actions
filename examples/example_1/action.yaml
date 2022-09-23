@@ -1,0 +1,72 @@
+name: NPM Build & Store
+inputs:
+    build_artifact_name:
+      required: true
+      type: string
+    build_artifact_path:
+      required: true
+      type: string
+    clone_recursive:
+      default: false
+      type: boolean
+    npm_run_list:
+      type: string
+runs:
+  using: "composite"
+  steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3
+
+# Run action
+    - name: setup
+      if: inputs.clone_recursive == 'true'
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.10.0
+        cache: npm
+
+# Run a local shell
+    - name: Build
+      run: bash ${{github.action_path}}/npm_run_multiple2.sh ${{ inputs.npm_run_list }}
+      shell: bash
+
+# Run local js
+    - name: Purge
+      run: node ${{github.action_path}}/purge-script.js
+      shell: bash
+
+# Run bash command
+
+    - name: npm run
+      shell: bash
+      run: |
+        rest=${{ inputs.npm_run_list }}
+        while [ -n "$rest" ] ; do
+          str=${rest%%,*}  # Everything up to the first ';'
+  
+          [ "$rest" = "${rest/,/}" ] && rest= || rest=${rest#*,}
+          echo "+ \"$str\"" 
+          npm run $str
+        done
+      
+    - name: Zip Build Artifacts
+      run: cd ${{ inputs.build_artifact_path }} && zip -r ~/${{ inputs.build_artifact_name }}.zip *
+      shell: bash
+
+    - name: Archive Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.build_artifact_name }}
+        path: ~/${{ inputs.build_artifact_name }}.zip
+
+    - name: build
+      run: npm_run_multiple.sh ${{ inputs.npm_run_list }}
+      shell: bash
+      
+    - name: Purge
+      run: node purge-script.js
+      shell: bash
+
+#https://colinsalmcorner.com/github-composite-actions/
+#https://timheuer.com/blog/use-github-composite-actions-for-templates-in-workflows/
+
