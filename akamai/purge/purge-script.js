@@ -36,5 +36,3 @@ try {
 } catch (error) {
   core.setFailed(error.message);
 }
-
-core.notice('Purged from Akamai system')
