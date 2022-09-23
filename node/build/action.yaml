@@ -12,7 +12,7 @@ inputs:
     clone_recursive:
       default: false
       type: boolean
-    build_options:
+    npm_run_list:
       type: string
 runs:
   using: "composite"
@@ -29,13 +29,11 @@ runs:
       run: npm ci
       shell: bash
 
-    - name: Bootstrap Modules
-      if: ${{ inputs.bootstrap }}
-      run: npm run bootstrap
-      shell: bash
-
-    - name: Build App
-      run: npm run build ${{ inputs.build_options }}
+    - name: npm run
+      strategy:
+      matrix:
+        run_list: ${{ inputs.npm_run_list }}
+      run: npm run ${{ matrix.run_list }}
       shell: bash
 
     - name: Zip Build Artifacts
