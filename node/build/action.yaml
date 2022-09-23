@@ -27,9 +27,17 @@ runs:
       shell: bash
 
     - name: npm run
-      main: npm_run_multiple.sh ${{ inputs.npm_run_list }}
       shell: bash
-
+      run: |
+        rest=${{ inputs.npm_run_list }}
+        while [ -n "$rest" ] ; do
+          str=${rest%%,*}  # Everything up to the first ';'
+  
+          [ "$rest" = "${rest/,/}" ] && rest= || rest=${rest#*,}
+          echo "+ \"$str\"" 
+          npm run $str
+        done
+      
     - name: Zip Build Artifacts
       run: cd ${{ inputs.build_artifact_path }} && zip -r ~/${{ inputs.build_artifact_name }}.zip *
       shell: bash
