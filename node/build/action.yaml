@@ -13,7 +13,7 @@ inputs:
       default: false
       type: boolean
     npm_run_list:
-      type: string
+      type: sequence
 runs:
   using: "composite"
   steps:
