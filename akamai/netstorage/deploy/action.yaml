@@ -3,6 +3,9 @@ inputs:
   build_artifact_name:
     required: true
     type: string
+  deploy_filename:
+      required: true
+      type: string
   environment:
     required: true
     type: string
@@ -26,4 +29,5 @@ runs:
         mkdir -p ~/.ssh
         echo "$AKAMAI_SSH_KEY" > ~/.ssh/id_rsa
         chmod 400 ~/.ssh/id_rsa
-        scp -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-dss -oPubkeyAcceptedKeyTypes=+ssh-dss ${{ inputs.build_artifact_name }}.zip ${{ inputs.scp_endpoint }}
+        mv ${{ inputs.build_artifact_name }}.zip ${{ inputs.deploy_filename }}.zip
+        scp -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-dss -oPubkeyAcceptedKeyTypes=+ssh-dss ${{ inputs.deploy_filename }}.zip ${{ inputs.scp_endpoint }}

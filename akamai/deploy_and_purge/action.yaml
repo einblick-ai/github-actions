@@ -3,6 +3,9 @@ inputs:
   build_artifact_name:
     required: true
     type: string
+  deploy_filename:
+      required: true
+      type: string
   environment:
     required: true
     type: string
@@ -22,6 +25,7 @@ runs:
       uses: einblick-ai/github-actions/akamai/netstorage/deploy@convert-workflows-to-actions
       with:
         build_artifact_name: ${{ inputs.build_artifact_name }}
+        deploy_filename: ${{ inputs.deploy_filename }}
         environment: ${{ inputs.environment }}
         url: ${{ inputs.url }}
         scp_endpoint: ${{ inputs.scp_endpoint }}
