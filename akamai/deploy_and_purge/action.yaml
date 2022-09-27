@@ -23,7 +23,7 @@ runs:
       with:
         build_artifact_name: ${{ inputs.build_artifact_name }}
         environment: ${{ inputs.environment }}
-        url: ${{ input.url }}
+        url: ${{ inputs.url }}
         scp_endpoint: ${{ inputs.scp_endpoint }}
       env:
         AKAMAI_SSH_KEY: ${{ env.AKAMAI_SSH_KEY }}
