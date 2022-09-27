@@ -21,17 +21,17 @@ runs:
     - name: deploy
       uses: einblick-ai/github-actions/akamai/netstorage/deploy@convert-workflows-to-actions
       with:
-        build_artifact_name: ${{ input.build_artifact_name }}
-        environment: ${{ input.environment }}
+        build_artifact_name: ${{ inputs.build_artifact_name }}
+        environment: ${{ inputs.environment }}
         url: ${{ input.url }}
-        scp_endpoint: ${{ input.scp_endpoint }}
+        scp_endpoint: ${{ inputs.scp_endpoint }}
       env:
         AKAMAI_SSH_KEY: ${{ env.AKAMAI_SSH_KEY }}
 
     - name: First Purge 
       uses: einblick-ai/github-actions/akamai/purge@convert-workflows-to-actions
       with:
-        cache_tag: ${{ input.cache_tag }}
+        cache_tag: ${{ inputs.cache_tag }}
       env:
         AKAMAI_PURGE_ACCESS_TOKEN: ${{ env.AKAMAI_PURGE_ACCESS_TOKEN  }}
         AKAMAI_PURGE_CLIENT_SECRET: ${{ env.AKAMAI_PURGE_CLIENT_SECRET  }}
@@ -46,7 +46,7 @@ runs:
     - name: Second Purge
       uses: einblick-ai/github-actions/akamai/purge@1.0.0
       with:
-        cache_tag: ${{ input.cache_tag }}
+        cache_tag: ${{ inputs.cache_tag }}
       env:
         AKAMAI_PURGE_ACCESS_TOKEN: ${{ env.AKAMAI_PURGE_ACCESS_TOKEN  }}
         AKAMAI_PURGE_CLIENT_SECRET: ${{ env.AKAMAI_PURGE_CLIENT_SECRET  }}
