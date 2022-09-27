@@ -44,7 +44,7 @@ runs:
         time: '20s'
 
     - name: Second Purge
-      uses: einblick-ai/github-actions/akamai/purge@1.0.0
+      uses: einblick-ai/github-actions/akamai/purge@convert-workflows-to-actions
       with:
         cache_tag: ${{ inputs.cache_tag }}
       env:
