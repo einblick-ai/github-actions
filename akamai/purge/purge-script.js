@@ -15,7 +15,7 @@ try {
 
   var api = new edgegrid(clientToken, clientSecret, accessToken, purgeHost);
 
-  data = {"objects":[cache_tag.split(",").map(String.trim())]}
+  data = {"objects":[cache_tag.split(",").map(element => { return element.trim(); })]}
 
   api.auth({
     path: '/ccu/v3/delete/tag/production',
