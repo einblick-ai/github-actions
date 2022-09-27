@@ -1,9 +1,12 @@
-const host 		= process.argv[2];
-const cp_code	= process.argv[3];
-const directory = encodeURIComponent(process.argv[4])
-const filename	= process.argv[5];
-const key 		= process.argv[6];
-const keyName 	= process.argv[7];
+const core      = require('@actions/core');
+
+const host 		  = core.getInput('host')
+const cp_code	  = core.getInput('cp_code')
+const directory = encodeURIComponent(core.getInput('directory'))
+const filename	= core.getInput('filename')
+const keyName 	= core.getInput('upload_account')
+
+const key       = process.env.AKAMAI_NETSTORAGE_CONTENT_API_KEY
 
 const actionHeaders = "version=1&action=delete"
 const netstoragePath = '/' + cp_code + "/" + directory + "/" + filename;
