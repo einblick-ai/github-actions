@@ -18,7 +18,7 @@ try {
   data = {"objects":[cache_tag]}
 
   api.auth({
-    path: '/ccu/v3/invalidate/tag/production',
+    path: '/ccu/v3/delete/tag/production',
     method: 'POST',
     headers: {
       accept: 'application/json',
