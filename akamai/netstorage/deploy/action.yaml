@@ -29,5 +29,7 @@ runs:
         mkdir -p ~/.ssh
         echo "$AKAMAI_SSH_KEY" > ~/.ssh/id_rsa
         chmod 400 ~/.ssh/id_rsa
-        mv ${{ inputs.build_artifact_name }}.zip ${{ inputs.deploy_filename }}.zip
+        if [ "${{ inputs.build_artifact_name }}" != "${{ inputs.deploy_filename }}" ]; then
+          mv ${{ inputs.build_artifact_name }}.zip ${{ inputs.deploy_filename }}.zip
+        fi
         scp -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-dss -oPubkeyAcceptedKeyTypes=+ssh-dss ${{ inputs.deploy_filename }}.zip ${{ inputs.scp_endpoint }}
