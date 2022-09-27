@@ -1,0 +1,35 @@
+name: Deploy to Akamai Netstorage
+inputs:
+  build_artifact_name:
+    required: true
+    type: string
+  deploy_filename:
+      required: true
+      type: string
+  environment:
+    required: true
+    type: string
+  scp_endpoint:
+    required: true
+    type: string
+  url:
+    required: true
+    type: string
+runs:
+  using: "composite"
+  steps:
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.build_artifact_name }}
+
+    - name: Copy Build via SCP
+      shell: bash
+      run: |
+        mkdir -p ~/.ssh
+        echo "$AKAMAI_SSH_KEY" > ~/.ssh/id_rsa
+        chmod 400 ~/.ssh/id_rsa
+        if [ "${{ inputs.build_artifact_name }}" != "${{ inputs.deploy_filename }}" ]; then
+          mv ${{ inputs.build_artifact_name }}.zip ${{ inputs.deploy_filename }}.zip
+        fi
+        scp -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-dss -oPubkeyAcceptedKeyTypes=+ssh-dss ${{ inputs.deploy_filename }}.zip ${{ inputs.scp_endpoint }}

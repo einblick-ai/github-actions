@@ -1,0 +1,16 @@
+name: Delete Akamai Deploy 
+inputs:
+  website:
+    required: true
+    type: string
+runs:
+  using: "composite"
+  steps:
+    - name: Algolia Docsearch Action
+      id: algolia
+      uses:  adapttive/algolia-docsearch-action@1.1.1
+      env:
+        APPLICATION_ID: {{YOUR_APP_ID}}
+        API_KEY: {{YOUR_API_KEY_WITH_WRITE_PERMISSIONS}}
+        INDEX_NAME:  ${{ inputs.website }}
+        CONFIG: '{"index_name":"example.com","start_urls":[{"url":"https://example.com/blog","selectors_key":"blog"}],"selectors":{"blog":{"lvl0":"h1","lvl1":"h2","lvl2":"h3","lvl3":"h4","lvl4":"h5","lvl5":"#description","text":"#content"}}}'
