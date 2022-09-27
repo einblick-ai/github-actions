@@ -1,0 +1,55 @@
+name: deploy and purge
+inputs:
+  build_artifact_name:
+    required: true
+    type: string
+  environment:
+    required: true
+    type: string
+  scp_endpoint:
+    required: true
+    type: string
+  url:
+    required: true
+    type: string
+  cache_tag:
+    required: true
+    type: string
+runs:
+  using: "composite"
+  steps:
+    - name: deploy
+      uses: einblick-ai/github-actions/akamai/netstorage/deploy@convert-workflows-to-actions
+      with:
+        build_artifact_name: ${{ input.build_artifact_name }}
+        environment: ${{ input.environment }}
+        url: ${{ input.url }}
+        scp_endpoint: ${{ input.scp_endpoint }}
+      env:
+        AKAMAI_SSH_KEY: ${{ env.AKAMAI_SSH_KEY }}
+
+    - name: First Purge 
+      uses: einblick-ai/github-actions/akamai/purge@convert-workflows-to-actions
+      with:
+        cache_tag: ${{ input.cache_tag }}
+      env:
+        AKAMAI_PURGE_ACCESS_TOKEN: ${{ env.AKAMAI_PURGE_ACCESS_TOKEN  }}
+        AKAMAI_PURGE_CLIENT_SECRET: ${{ env.AKAMAI_PURGE_CLIENT_SECRET  }}
+        AKAMAI_PURGE_CLIENT_TOKEN: ${{ env.AKAMAI_PURGE_CLIENT_TOKEN  }}
+        AKAMAI_PURGE_HOST: ${{ env.AKAMAI_PURGE_HOST  }}
+
+    - name: Wait between purges
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '20s'
+
+    - name: Second Purge
+      uses: einblick-ai/github-actions/akamai/purge@1.0.0
+      with:
+        cache_tag: ${{ input.cache_tag }}
+      env:
+        AKAMAI_PURGE_ACCESS_TOKEN: ${{ env.AKAMAI_PURGE_ACCESS_TOKEN  }}
+        AKAMAI_PURGE_CLIENT_SECRET: ${{ env.AKAMAI_PURGE_CLIENT_SECRET  }}
+        AKAMAI_PURGE_CLIENT_TOKEN: ${{ env.AKAMAI_PURGE_CLIENT_TOKEN  }}
+        AKAMAI_PURGE_HOST: ${{ env.AKAMAI_PURGE_HOST  }}
+
