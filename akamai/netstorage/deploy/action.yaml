@@ -16,13 +16,13 @@ runs:
   using: "composite"
   steps:
     - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{ inputs.build_artifact_name }}
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.build_artifact_name }}
 
     - name: Copy Build via SCP
-        run: |
-          mkdir -p ~/.ssh
-          echo "$AKAMAI_SSH_KEY" > ~/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
-          scp -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-dss -oPubkeyAcceptedKeyTypes=+ssh-dss ${{ inputs.build_artifact_name }}.zip ${{ inputs.scp_endpoint }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$AKAMAI_SSH_KEY" > ~/.ssh/id_rsa
+        chmod 400 ~/.ssh/id_rsa
+        scp -oStrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-dss -oPubkeyAcceptedKeyTypes=+ssh-dss ${{ inputs.build_artifact_name }}.zip ${{ inputs.scp_endpoint }}
