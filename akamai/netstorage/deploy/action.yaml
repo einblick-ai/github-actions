@@ -21,6 +21,7 @@ runs:
         name: ${{ inputs.build_artifact_name }}
 
     - name: Copy Build via SCP
+      shell: bash
       run: |
         mkdir -p ~/.ssh
         echo "$AKAMAI_SSH_KEY" > ~/.ssh/id_rsa
