@@ -22,7 +22,7 @@ runs:
   steps:
     - name: Clone Repo with Submodules
       if: inputs.clone_recursive == 'true'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.1.0
       with:
         submodules: "recursive"
         token: ${{ env.GH_ACTIONS_READ_REPO }}
@@ -30,12 +30,12 @@ runs:
 
     - name: Clone Repo
       if: inputs.clone_recursive == 'false'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.1.0
       with: 
         ref: ${{ inputs.ref }}
 
     - name: Setup Node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v3.5.0
       with:
         node-version: 16.10.0
         cache: npm
