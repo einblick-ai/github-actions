@@ -1,4 +1,4 @@
-name: NPM Build & Store
+name: node build & store
 inputs:
     build_artifact_name:
       required: true
@@ -14,6 +14,9 @@ inputs:
       type: boolean
     build_options:
       type: string
+    ref: 
+      default: ''
+      type: string
 runs:
   using: "composite"
   steps:
@@ -23,6 +26,7 @@ runs:
       with:
         submodules: "recursive"
         token: ${{ env.GH_ACTIONS_READ_REPO }}
+        ref: ${{ inputs.ref }}
 
     - name: Clone Repo
       if: inputs.clone_recursive == 'false'
