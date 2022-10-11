@@ -31,6 +31,8 @@ runs:
     - name: Clone Repo
       if: inputs.clone_recursive == 'false'
       uses: actions/checkout@v3
+      with: 
+        ref: ${{ inputs.ref }}
 
     - name: Setup Node
       uses: actions/setup-node@v3
