@@ -45,6 +45,6 @@ runs:
       shell: bash
       run: npm install --legacy-peer-deps
 
-    - name: Run Command
+    - name: Run Additional Commands
       shell: bash
       run: ${{ inputs.command }}
