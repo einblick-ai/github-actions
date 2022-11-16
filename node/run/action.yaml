@@ -11,14 +11,14 @@ runs:
   using: "composite"
   steps:
     - name: Clone Repo Recursively
-      if: inputs.clone_recursive == "true"
+      if: inputs.clone_recursive == 'true'
       uses: actions/checkout@v3
       with:
         submodules: "recursive"
         token: ${{ env.GH_ACTIONS_READ_REPO }}
 
     - name: Clone Repo
-      if: inputs.clone_recursive == "false"
+      if: inputs.clone_recursive == 'false'
       uses: actions/checkout@v3
 
     - name: Setup Node
