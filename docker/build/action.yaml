@@ -7,14 +7,14 @@ inputs:
   image_tags:
     description: "Tags to use for the image"
     required: true
-  build_args:
-    description: "Build arguments to use for the image"
   cache_from:
     description: "Docker build cache source"
     required: false
   cache_to:
     description: "Docker build cache destination"
     required: false
+  build_args:
+    description: "Build arguments to use for the image"
   clone_recursive:
     description: "Clone the repository recursively"
     default: "true"
