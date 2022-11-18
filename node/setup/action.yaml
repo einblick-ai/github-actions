@@ -1,5 +1,5 @@
-name: Node Install & Run
-description: Utility to setup node, install modules, and run arbitrary scripts
+name: Node Setup
+description: Utility to setup node and install modules using a cache
 inputs:
   clone_recursive:
     description: "Clone the repository recursively"
