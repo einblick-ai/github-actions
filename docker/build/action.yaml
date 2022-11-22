@@ -1,0 +1,55 @@
+name: Docker Login, Setup, Build, Push
+description: Utility to combine 4 steps required to build a docker image
+inputs:
+  username:
+    description: "Username to use for the image"
+    required: true
+  image_tags:
+    description: "Tags to use for the image"
+    required: true
+  cache_from:
+    description: "Docker build cache source"
+    required: false
+  cache_to:
+    description: "Docker build cache destination"
+    required: false
+  build_args:
+    description: "Build arguments to use for the image"
+  clone_recursive:
+    description: "Clone the repository recursively"
+    default: "true"
+  dockerfile:
+    description: "Dockerfile to use"
+    default: "docker/deploy.dockerfile"
+runs:
+  using: "composite"
+  steps:
+    - name: Clone Repo Recursively
+      if: inputs.clone_recursive == 'true'
+      uses: actions/checkout@v3
+      with:
+        submodules: "recursive"
+        token: ${{ env.repo_token }}
+
+    - name: Clone Repo
+      if: inputs.clone_recursive == 'false'
+      uses: actions/checkout@v3
+
+    - uses: docker/setup-buildx-action@v2
+
+    - uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ inputs.username }}
+        password: ${{ env.registry_token }}
+
+    - name: Build and Push Image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: true
+        tags: ${{ inputs.image_tags }}
+        cache-from: ${{ inputs.cache_from }}
+        cache-to: ${{ inputs.cache_to }}
+        build-args: ${{ inputs.build_args }}
+        file: ${{ inputs.dockerfile }}
