@@ -1,22 +1,22 @@
 name: node build & store
 inputs:
-    build_artifact_name:
-      required: true
-      type: string
-    build_artifact_path:
-      required: true
-      type: string
-    bootstrap:
-      default: false
-      type: boolean
-    clone_recursive:
-      default: false
-      type: boolean
-    build_options:
-      type: string
-    ref: 
-      default: ''
-      type: string
+  build_artifact_name:
+    required: true
+    type: string
+  build_artifact_path:
+    required: true
+    type: string
+  bootstrap:
+    default: false
+    type: boolean
+  clone_recursive:
+    default: false
+    type: boolean
+  build_options:
+    type: string
+  ref:
+    default: ""
+    type: string
 runs:
   using: "composite"
   steps:
@@ -31,7 +31,7 @@ runs:
     - name: Clone Repo
       if: inputs.clone_recursive == 'false'
       uses: actions/checkout@v3.1.0
-      with: 
+      with:
         ref: ${{ inputs.ref }}
 
     - name: Setup Node
@@ -51,6 +51,8 @@ runs:
 
     - name: Build App
       shell: bash
+      env:
+        SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
       run: npm run build ${{ inputs.build_options }}
 
     - name: Zip Build Artifacts
@@ -62,5 +64,3 @@ runs:
       with:
         name: ${{ inputs.build_artifact_name }}
         path: ~/${{ inputs.build_artifact_name }}.zip
-
-

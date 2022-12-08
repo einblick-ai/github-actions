@@ -53,3 +53,5 @@ runs:
         cache-to: ${{ inputs.cache_to }}
         build-args: ${{ inputs.build_args }}
         file: ${{ inputs.dockerfile }}
+      env:
+        SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
