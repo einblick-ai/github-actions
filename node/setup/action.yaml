@@ -4,9 +4,6 @@ inputs:
   clone_recursive:
     description: "Clone the repository recursively"
     default: "true"
-  command:
-    description: "NPM commands to run after setting up the repo"
-    required: true
 runs:
   using: "composite"
   steps:
@@ -43,4 +40,4 @@ runs:
 
     - name: Install Node Modules
       shell: bash
-      run: npm install --legacy-peer-deps
+      run: npm ci
