@@ -6,9 +6,6 @@ inputs:
     build_artifact_path:
       required: true
       type: string
-    bootstrap:
-      default: false
-      type: boolean
     clone_recursive:
       default: false
       type: boolean
@@ -43,11 +40,6 @@ runs:
     - name: Install Node Modules
       shell: bash
       run: npm ci
-
-    - name: Bootstrap Modules
-      if: inputs.bootstrap == 'true'
-      shell: bash
-      run: npm run bootstrap
 
     - name: Build App
       shell: bash
